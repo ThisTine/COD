@@ -1,0 +1,2 @@
+# COD (Camera object detection) 📸
+COD is an application that uses AI 🤖 to controll a camera controller to keep person in the centerstage 💡 at all time. COD also detect hand gesture in order to zoom into an object. 👀
