@@ -2,6 +2,7 @@ from utils.capture import camera, get_bounding_box, zoom
 from utils.hand_position.predict_hand import HandModel
 from utils.person.predict_person import PersonModel
 from utils.object_position.predict_object import ObjectModel
+from utils.object_position.calculate_object_via_hand_position import calculate_object_via_hand_position
 import cv2
 from statistics import mean 
 
@@ -10,6 +11,10 @@ cap,width,height = camera.get_video_capture()
 hand_model = HandModel()
 person_model = PersonModel()
 object_model = ObjectModel()
+
+#0->left_pointer
+#1->right_pointer
+hand_class_names = hand_model.model.names
 
 while True:
     success, img = cap.read()
@@ -21,24 +26,42 @@ while True:
     obj_xy1, obj_xy2 = get_bounding_box.get_bounding_box(object_result)
 
     for h_ind in range(len(hand_xy1)):
-        x1,y1 = hand_xy1[h_ind]
-        x2, y2 = hand_xy2[h_ind]
+        x1, y1,_ = hand_xy1[h_ind]
+        x2, y2,_ = hand_xy2[h_ind]
         cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 255), 3)
 
     for p_ind in range(len(person_xy1)):
-        x1,y1 = person_xy1[p_ind]
-        x2, y2 = person_xy2[p_ind]
+        x1,y1,_ = person_xy1[p_ind]
+        x2, y2,_ = person_xy2[p_ind]
         cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
 
     for obj_ind in range(len(obj_xy1)):
-        x1,y1 = obj_xy1[obj_ind]
-        x2, y2 = obj_xy2[obj_ind]
+        x1,y1,_ = obj_xy1[obj_ind]
+        x2, y2,_ = obj_xy2[obj_ind]
         cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
 
-    if len(person_xy1) == 1:
-        x1,y1 = person_xy1[0]
-        x2, y2 = person_xy2[0]
-        img = zoom.zoom_at(img,1.5, coord=(int(mean([x1,x2])), int(mean([y1,y2]))), size=(width,height))
+    if len(hand_xy1) == 1:
+        # print(hand_class_names)
+        hand_cls = hand_class_names[hand_xy1[0][2]]
+        if hand_cls == 'right_pointer':
+            point_pos = hand_xy2[0][0]
+            obj = calculate_object_via_hand_position(obj_pos=obj_xy1,hand_pos=point_pos,isLeft=False)
+            if obj != None:
+                o_x1 = obj[0]
+                o_y1 = obj[1]
+                o_ind = obj[2]
+                o_x2,o_y2,_ = obj_xy2[o_ind]
+                img = zoom.zoom_at(img,coord=([o_x1,o_y1],[o_x2,o_y2]),size=(width,height))
+        if hand_cls == 'left_pointer':
+            point_pos = hand_xy1[0][0]
+            obj = calculate_object_via_hand_position(obj_pos=obj_xy2,hand_pos=point_pos,isLeft=True)
+            if obj != None:
+                o_x2 = obj[0]
+                o_y2 = obj[1]
+                o_ind = obj[2]
+                o_x1,o_y1,_ = obj_xy1[o_ind]
+                img = zoom.zoom_at(img,coord=([o_x1,o_y1],[o_x2,o_y2]),size=(width,height))
+
     cv2.imshow('Webcam', img)
     if cv2.waitKey(1) == ord('q'):
         break
