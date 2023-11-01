@@ -40,7 +40,12 @@ def zoom_at(img, coord=None, size=None):
     
     # img = cv2.resize( img, (0, 0), fx=zoom, fy=zoom)
     # print([[int(minY-(len_Y/2)),int(minY+len_Y/2)],[int(minX-len_X/2),int(minX+len_X/2)]] )
-    cropped_img = img[int(minY):int(minY+len_Y),int(minX-len_X/2):int(minX+len_X)]
+    shift_X = (maxX - minX)/2
+    shift_Y = (maxY - minY)/2
+    if len_X > len_Y:
+        cropped_img = img[int(minY):int(minY+len_Y),int(minX-(len_X/2)+shift_X):int(minX+(len_X/2)+shift_X)]
+    else:
+        cropped_img = img[int(minY-(len_Y/2)+shift_Y):int(minY+(len_Y/2)+shift_Y),int(minX-(len_X/2)+shift_X):int(minX+(len_X/2)+shift_X)]
     try:
         temp = cv2.resize(cropped_img, (w,h), interpolation=cv2.INTER_AREA)
         return temp
