@@ -1,5 +1,6 @@
 import cv2
 def zoom_at(img, coord=None, size=None):
+    print(coord)
     # Translate to zoomed coordinates
     # h, w, _ = [ zoom * i for i in img.shape ]
     h, w, _ = img.shape
@@ -38,9 +39,8 @@ def zoom_at(img, coord=None, size=None):
 
     
     # img = cv2.resize( img, (0, 0), fx=zoom, fy=zoom)
-    cropped_img = img[int(minX):int(maxX+len_X), int(minY):int(maxY+len_Y)]
-    print(img.shape)
-    print(w,h)
+    # print([[int(minY-(len_Y/2)),int(minY+len_Y/2)],[int(minX-len_X/2),int(minX+len_X/2)]] )
+    cropped_img = img[int(minY):int(minY+len_Y),int(minX-len_X/2):int(minX+len_X)]
     try:
         temp = cv2.resize(cropped_img, (w,h), interpolation=cv2.INTER_AREA)
         return temp

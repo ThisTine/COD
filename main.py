@@ -21,19 +21,25 @@ while True:
     hand_result = hand_model.predict(source=img)
     person_result = person_model.predict(source=img)
     object_result = object_model.predict(source=img)
-    person_xy1, person_xy2 = get_bounding_box.get_bounding_box(person_result)
+    # person_xy1, person_xy2 = get_bounding_box.get_bounding_box(person_result)
     hand_xy1, hand_xy2 = get_bounding_box.get_bounding_box(hand_result)
     obj_xy1, obj_xy2 = get_bounding_box.get_bounding_box(object_result)
 
     for h_ind in range(len(hand_xy1)):
-        x1, y1,_ = hand_xy1[h_ind]
+        x1, y1,cls = hand_xy1[h_ind]
         x2, y2,_ = hand_xy2[h_ind]
+        org = [x1, y1]
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        fontScale = 1
+        color = (255, 0, 0)
+        thickness = 2
         cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 255), 3)
+        # cv2.putText(img, hand_class_names[cls], org, font, fontScale, color, thickness)
 
-    for p_ind in range(len(person_xy1)):
-        x1,y1,_ = person_xy1[p_ind]
-        x2, y2,_ = person_xy2[p_ind]
-        cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
+    #for p_ind in range(len(person_xy1)):
+    #    x1,y1,_ = person_xy1[p_ind]
+    #    x2, y2,_ = person_xy2[p_ind]
+    #    cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
 
     for obj_ind in range(len(obj_xy1)):
         x1,y1,_ = obj_xy1[obj_ind]
@@ -51,6 +57,7 @@ while True:
                 o_y1 = obj[1]
                 o_ind = obj[2]
                 o_x2,o_y2,_ = obj_xy2[o_ind]
+                print("right_pointer")
                 img = zoom.zoom_at(img,coord=([o_x1,o_y1],[o_x2,o_y2]),size=(width,height))
         if hand_cls == 'left_pointer':
             point_pos = hand_xy1[0][0]
@@ -60,6 +67,7 @@ while True:
                 o_y2 = obj[1]
                 o_ind = obj[2]
                 o_x1,o_y1,_ = obj_xy1[o_ind]
+                print("left_pointer")
                 img = zoom.zoom_at(img,coord=([o_x1,o_y1],[o_x2,o_y2]),size=(width,height))
 
     cv2.imshow('Webcam', img)
