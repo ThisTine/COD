@@ -21,4 +21,4 @@ class ObjectModel:
         includeClass.remove(505)
         includeClass.remove(594)
         
-        return self.model.predict(source=source,stream=True, conf=0.2, hide_labels=True, classes=includeClass)
+        return self.model.predict(source=source,stream=True, conf=0.2, classes=includeClass)
