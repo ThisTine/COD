@@ -6,7 +6,6 @@ from utils.person.predict_person import PersonModel
 from utils.object_position.predict_object import ObjectModel
 from utils.object_position.calculate_object_via_hand_position import calculate_object_via_hand_position
 import cv2
-from statistics import mean 
 
 
 cap,width,height = camera.get_video_capture()
