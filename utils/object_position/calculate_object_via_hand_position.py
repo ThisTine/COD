@@ -1,4 +1,5 @@
 def calculate_object_via_hand_position(obj_pos: list[list[int]],hand_pos:int, isLeft: bool):
+    print(obj_pos)
     obj = None
     for ind in range(len(obj_pos)):
        x,y,_ = obj_pos[ind]

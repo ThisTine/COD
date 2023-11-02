@@ -4,23 +4,24 @@ class ObjectModel:
 
     def __init__(self):
         # self.model = YOLO("weight/object/openImg.pt")
-        self.model = YOLO("weight/object/yolov8m.pt")
-        self.includeClass = [*range(1,80)]
+        self.model = YOLO("weight/object/yolov8n-oiv7.pt")
+        self.includeClass = [*range(0,601)]
+        for i in range(259, 272):
+            # print(i)
+            self.includeClass.remove(i)
+        self.includeClass.remove(70)
+        self.includeClass.remove(115)
+        self.includeClass.remove(116)
+        self.includeClass.remove(217)
+        self.includeClass.remove(283)
+        self.includeClass.remove(322)
+        self.includeClass.remove(354)
+        self.includeClass.remove(381)
+        self.includeClass.remove(505)
+        self.includeClass.remove(594)
+        # self.includeClass = [*range(1,80)]
 
     def predict(self, source):
-    #     includeClass = [*range(0,601)]
-    #     for i in range(259, 272):
-    #         print(i)
-    #         includeClass.remove(i)
-    #     includeClass.remove(70)
-    #     includeClass.remove(115)
-    #     includeClass.remove(116)
-    #     includeClass.remove(217)
-    #     includeClass.remove(283)
-    #     includeClass.remove(322)
-    #     includeClass.remove(354)
-    #     includeClass.remove(381)
-    #     includeClass.remove(505)
-    #     includeClass.remove(594)
 
-        return self.model.predict(source=source,stream=True, conf=0.2, classes=self.includeClass)
+
+        return self.model.predict(source=source,stream=True, conf=0.1, classes=self.includeClass)
