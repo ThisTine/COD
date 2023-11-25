@@ -8,4 +8,4 @@ class PersonModel:
         self.model = YOLO("./weight/human/yolov8n.pt")
 
     def predict(self,source):
-        return self.model.predict(source=source,stream=True, classes=[0], conf=0.8)
+        return self.model.predict(source=source,stream=True, classes=[0], conf=0.8,verbose=False)

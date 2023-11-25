@@ -6,4 +6,4 @@ class HandModel:
         self.model = YOLO("weight/hand/hand.pt")
 
     def predict(self, source):
-        return self.model.predict(source=source,stream=True, conf=0.6)
+        return self.model.predict(source=source,stream=True, conf=0.6,verbose=False)
