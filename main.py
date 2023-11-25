@@ -9,8 +9,6 @@ from utils.object_position.predict_object import ObjectModel
 from utils.object_position.calculate_object_via_hand_position import calculate_object_via_hand_position
 import cv2
 
-path = str("./test_dict")
-
 current_zoom_pos = None
 
 
