@@ -1,6 +1,8 @@
-import  requests
-import ssl
-def calculate_person_position(bigBox: (int,int), smallBox: (int,int)):
+import requests
+import asyncio
+import threading
+
+def calculate_person_position(bigBox: (int, int), smallBox: (int, int)):
     b_x1 = bigBox[0]
     b_x2 = bigBox[1]
     s_x1 = smallBox[0]
@@ -8,35 +10,39 @@ def calculate_person_position(bigBox: (int,int), smallBox: (int,int)):
 
     left = s_x1 - b_x1
     right = b_x2 - s_x2
-    # response = Request('GET', "http://cod9000.pspgun.com/")
-    # prepped = s.prepare_request(response)
-    # resp = s.send(prepped)
-    # print(resp.status_code)
-    # print(response)
-    # print(prepped)
-    print(requests.get("https://httpbin.org/get"))
+    # print(requests.get("https://httpbin.org/get"))
     if left < 0 < right:
-        response = requests.patch("https://cod9000.pspgun.com/change/L",verify=False)
-        print(response.status_code)
+        thread = threading.Thread(target=asyncio.run, args=(cameraright(),))
+        thread.start()
         return "LEFT"
     if right < 0 < left:
-        response = requests.patch("https://cod9000.pspgun.com/change/R",verify=False)
-        print(response.status_code)
+        thread = threading.Thread(target=asyncio.run, args=(cameraleft(),))
+        thread.start()
         return "RIGHT"
-    if left >= 0 and right >= 0 :
-        response = requests.patch("https://cod9000.pspgun.com/change/S",verify=False)
-        print(response.status_code)
+    if left >= 0 and right >= 0:
+        thread = threading.Thread(target=asyncio.run, args=(camerastop(),))
+        thread.start()
         return "CENTER"
-
-    if abs(left) - abs(right) > 0 :
-        response = requests.patch("https://cod9000.pspgun.com/change/L",verify=False)
-        print(response.status_code)
+    if abs(left) - abs(right) > 0:
+        thread = threading.Thread(target=asyncio.run, args=(cameraright(),))
+        thread.start()
         return "LEFT"
-    if abs(right) - abs(left) > 0 :
-        response = requests.patch("https://cod9000.pspgun.com/change/R",verify=False)
-        print(response.status_code)
+    if abs(right) - abs(left) > 0:
+        thread = threading.Thread(target=asyncio.run, args=(cameraleft(),))
+        thread.start()
         return "RIGHT"
-    response = requests.post("https://cod9000.pspgun.com/change/S",verify=False)
     return "CENTER"
 
     # return "LEFT"
+
+
+async def cameraleft():
+    requests.patch("https://cod9000.pspgun.com/change/L", verify=False)
+
+
+async def cameraright():
+    requests.patch("https://cod9000.pspgun.com/change/R", verify=False)
+
+
+async def camerastop():
+    requests.patch("https://cod9000.pspgun.com/change/S", verify=False)

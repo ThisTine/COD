@@ -71,6 +71,7 @@ def start_video(is_show_person_text_o, is_show_person_bounding_box_o, is_show_ob
             x1, y1, _ = person_xy1[p_ind]
             x2, y2, _ = person_xy2[p_ind]
             if is_show_person_bounding_box:
+                # cv2.rectangle(img, start_point,end_point,(0, 255, 0), 3)
                 cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 3)
             if is_show_person_text:
                 cv2.putText(img, calculate_person_position(big_box_x, (x1, x2)), [int(width / 2) - 200, int(height)],
