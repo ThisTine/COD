@@ -24,4 +24,4 @@ class ObjectModel:
     def predict(self, source):
 
 
-        return self.model.predict(source=source,stream=True, conf=0.01, classes=self.includeClass,verbose=False)
+        return self.model.predict(source=source,stream=True, conf=0.1, classes=self.includeClass,verbose=False)

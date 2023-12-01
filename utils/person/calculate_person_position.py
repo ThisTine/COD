@@ -31,6 +31,7 @@ def calculate_person_position(bigBox: (int, int), smallBox: (int, int)):
         thread = threading.Thread(target=asyncio.run, args=(cameraleft(),))
         thread.start()
         return "RIGHT"
+    response = requests.post("https://cod9000.pspgun.com/change/S",verify=False)
     return "CENTER"
 
     # return "LEFT"

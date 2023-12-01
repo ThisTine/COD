@@ -1,8 +1,9 @@
 import cv2
 def zoom_at(img, coord=None, size=None):
-    print(coord)
+    # print(coord)
     # Translate to zoomed coordinates
     # h, w, _ = [ zoom * i for i in img.shape ]
+    # print(coord)
     h, w, _ = img.shape
     aspectRatio = w/h
 
@@ -49,5 +50,6 @@ def zoom_at(img, coord=None, size=None):
     try:
         temp = cv2.resize(cropped_img, (w,h), interpolation=cv2.INTER_AREA)
         return temp
-    except:
+    except Exception as error:
+        print(error)
         return img
