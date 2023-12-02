@@ -12,12 +12,12 @@ def start_gui(is_show_person_text_o, is_show_person_bounding_box_o, is_show_obje
 
     def set_person_text(is_show_person_text_o):
         is_show_person_text_o.value = not is_show_person_text_o.value
-        hand_bounding_box_bth['text'] = "{status} Show person text".format(
-            status="Hide" if is_show_person_text_o.value else "Show")
+        hand_bounding_box_bth['text'] = "{status} center stage".format(
+            status="Disabled" if is_show_person_text_o.value else "Enabled")
 
     hand_bounding_box_bth = tk.Button(window, command=lambda: set_person_text(is_show_person_text_o))
-    hand_bounding_box_bth['text'] = "{status} person text".format(
-        status="Hide" if is_show_person_text_o.value else "Show")
+    hand_bounding_box_bth['text'] = "{status} center stage".format(
+            status="Disabled" if is_show_person_text_o.value else "Enabled")
     hand_bounding_box_bth.pack()
 
     def set_hand_bounding_box(is_show_hand_bounding_box_o):

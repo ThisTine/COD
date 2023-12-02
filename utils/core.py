@@ -24,8 +24,8 @@ def start_video(is_show_person_text_o, is_show_person_bounding_box_o, is_show_ob
     # 1->right_pointer
     hand_class_names = hand_model.model.names
 
-    start_point = (int(width / 4), 0)
-    end_point = (int(width - (width / 4)), int(height))
+    start_point = (int(width / 6), 0)
+    end_point = (int(width - (width / 6)), int(height))
 
     big_box_x = (start_point[0], end_point[0])
 
@@ -72,11 +72,12 @@ def start_video(is_show_person_text_o, is_show_person_bounding_box_o, is_show_ob
             x1, y1, _ = person_xy1[p_ind]
             x2, y2, _ = person_xy2[p_ind]
             if is_show_person_bounding_box:
-                # cv2.rectangle(img, start_point,end_point,(0, 255, 0), 3)
+                cv2.rectangle(img, start_point,end_point,(0, 0, 0), 3)
                 cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 3)
             if is_show_person_text and current_zoom_pos is None:
-                cv2.putText(img, calculate_person_position(big_box_x, (x1, x2)), [int(width / 2) - 200, int(height)],
-                            cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 0), 5)
+                calculate_person_position(big_box_x, (x1, x2))
+                # cv2.putText(img, calculate_person_position(big_box_x, (x1, x2)), [int(width / 2) - 200, int(height)],
+                #             cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 0), 5)
 
         if len(hand_xy1) == 1:
             thread = threading.Thread(target=asyncio.run, args=(camerastop(),))
